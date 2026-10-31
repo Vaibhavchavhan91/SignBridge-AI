@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#0D47A1</color>
+    <color name="primary_dark">#0A2E68</color>
+    <color name="primary_light">#1976D2</color>
+    <color name="primary_container">#E3F2FD</color>
+    <color name="on_primary_container">#0D47A1</color>
+
+    <color name="secondary">#0288D1</color>
+    <color name="secondary_container">#E1F5FE</color>
+
+    <color name="accent">#FFAB00</color>
+    <color name="accent_yellow">#FFD600</color>
+
+    <!-- Light Theme Surface & Text -->
+    <color name="background_light">#F5F8FC</color>
+    <color name="surface_light">#FFFFFF</color>
+    <color name="surface_variant_light">#EEF3F8</color>
+    <color name="text_primary_light">#0F172A</color>
+    <color name="text_secondary_light">#475569</color>
+    <color name="divider_light">#E2E8F0</color>
+
+    <!-- Dark Theme Surface & Text -->
+    <color name="background_dark">#0B1325</color>
+    <color name="surface_dark">#131F37</color>
+    <color name="surface_variant_dark">#1E2D4A</color>
+    <color name="text_primary_dark">#F8FAFC</color>
+    <color name="text_secondary_dark">#94A3B8</color>
+    <color name="divider_dark">#243350</color>
+
+    <!-- High Contrast Specific -->
+    <color name="high_contrast_bg">#000000</color>
+    <color name="high_contrast_surface">#121212</color>
+    <color name="high_contrast_yellow">#FFFF00</color>
+    <color name="high_contrast_white">#FFFFFF</color>
+    <color name="high_contrast_cyan">#00FFFF</color>
+
+    <!-- State & Feedback Colors -->
+    <color name="mic_active">#E11D48</color>
+    <color name="mic_listening">#2563EB</color>
+    <color name="mic_paused">#D97706</color>
+    <color name="status_ready">#059669</color>
+    <color name="status_error">#DC2626</color>
+    <color name="wave_bar">#38BDF8</color>
+
+    <!-- Caption Bubbles -->
+    <color name="caption_bubble_bg_light">#FFFFFF</color>
+    <color name="caption_bubble_border_light">#CBD5E1</color>
+    <color name="caption_bubble_bg_dark">#182642</color>
+    <color name="caption_bubble_border_dark">#2A3F66</color>
+
+    <color name="partial_caption_bg_light">#EFF6FF</color>
+    <color name="partial_caption_bg_dark">#1E293B</color>
+
+    <!-- Common Utilities -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base Application Theme using Material 3 DayNight -->
+    <style name="Theme.SignBridge" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Brand Colors -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorAccent">@color/accent</item>
+
+        <!-- Surfaces -->
+        <item name="android:windowBackground">@color/background_light</item>
+        <item name="colorSurface">@color/surface_light</item>
+
+        <!-- Status & Navigation Bar -->
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@color/background_light</item>
+
+        <!-- Ripple and Text Appearance -->
+        <item name="colorControlHighlight">@color/primary_container</item>
+    </style>
+
+    <!-- High Contrast Yellow-on-Black Accessibility Theme -->
+    <style name="Theme.SignBridge.HighContrast" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/high_contrast_yellow</item>
+        <item name="colorPrimaryDark">@color/high_contrast_bg</item>
+        <item name="colorSecondary">@color/high_contrast_cyan</item>
+        <item name="colorAccent">@color/high_contrast_yellow</item>
+
+        <item name="android:windowBackground">@color/high_contrast_bg</item>
+        <item name="colorSurface">@color/high_contrast_surface</item>
+
+        <item name="android:statusBarColor">@color/high_contrast_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@color/high_contrast_bg</item>
+    </style>
+
+    <!-- Legacy alias to ensure no breakage if referenced -->
+    <style name="Theme.MyApplication" parent="Theme.SignBridge" />
+</resources>

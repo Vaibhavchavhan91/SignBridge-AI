@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    android:orientation="vertical">
+
+    <!-- Top Action Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarLive"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/surface_light"
+        android:elevation="2dp"
+        app:navigationIcon="@drawable/ic_arrow_back_24dp"
+        app:navigationIconTint="@color/primary"
+        app:title="@string/captions_title"
+        app:titleTextColor="@color/primary">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="8dp">
+
+            <!-- Font Size Decrease -->
+            <ImageButton
+                android:id="@+id/btnFontDecrease"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_font_decrease"
+                android:src="@drawable/ic_text_fields_24dp"
+                app:tint="@color/text_secondary_light" />
+
+            <!-- Font Size Increase -->
+            <ImageButton
+                android:id="@+id/btnFontIncrease"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_font_increase"
+                android:src="@drawable/ic_text_fields_24dp"
+                app:tint="@color/primary" />
+
+            <!-- Clear Transcript Button -->
+            <ImageButton
+                android:id="@+id/btnClearCaptions"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_clear_button"
+                android:src="@drawable/ic_clear_24dp"
+                app:tint="@color/text_secondary_light" />
+
+            <!-- Save Session Button -->
+            <ImageButton
+                android:id="@+id/btnSaveSession"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_save_button"
+                android:src="@drawable/ic_copy_24dp"
+                app:tint="@color/primary" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <!-- Status & Sound Visualizer Bar -->
+    <LinearLayout
+        android:id="@+id/statusHeaderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_variant_light"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="10dp">
+
+        <View
+            android:id="@+id/viewStatusDot"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:background="@drawable/bg_mic_button"
+            android:backgroundTint="@color/status_ready" />
+
+        <TextView
+            android:id="@+id/tvLiveStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/captions_status_listening"
+            android:textColor="@color/text_primary_light"
+            android:textSize="14sp" />
+
+        <!-- 5-bar Sound Level Visualizer for deaf accessibility -->
+        <LinearLayout
+            android:id="@+id/soundBarsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:contentDescription="@string/cd_volume_meter"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/bar1"
+                android:layout_width="4dp"
+                android:layout_height="6dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_sound_bar" />
+
+            <View
+                android:id="@+id/bar2"
+                android:layout_width="4dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_sound_bar" />
+
+            <View
+                android:id="@+id/bar3"
+                android:layout_width="4dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_sound_bar" />
+
+            <View
+                android:id="@+id/bar4"
+                android:layout_width="4dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_sound_bar" />
+
+            <View
+                android:id="@+id/bar5"
+                android:layout_width="4dp"
+                android:layout_height="6dp"
+                android:background="@drawable/bg_sound_bar" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvLiveLanguagePill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_sound_bar"
+            android:backgroundTint="@color/primary_container"
+            android:fontFamily="sans-serif-medium"
+            android:paddingStart="8dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="2dp"
+            android:text="English"
+            android:textColor="@color/primary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <!-- Captions Area: Main List & Empty State -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <TextView
+            android:id="@+id/tvEmptyCaptionsPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:padding="32dp"
+            android:text="@string/captions_empty_placeholder"
+            android:textColor="@color/text_secondary_light"
+            android:textSize="18sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCaptions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+
+    </RelativeLayout>
+
+    <!-- Live Partial Results Card ("Hearing now...") -->
+    <LinearLayout
+        android:id="@+id/cardPartialResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_partial_bubble"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/captions_hearing_label"
+                android:textColor="@color/primary"
+                android:textSize="13sp" />
+
+            <ProgressBar
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/primary" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvPartialText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif-medium"
+            android:text=""
+            android:textColor="@color/primary_dark"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
+    <!-- Quick Reply Text-to-Speech Bar -->
+    <LinearLayout
+        android:id="@+id/layoutQuickTts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_light"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Quick Phrases Horizontal Scroll -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnQuickPhrase1"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/tts_phrase_yes"
+                    android:textSize="12sp"
+                    app:cornerRadius="20dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnQuickPhrase2"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/tts_phrase_no"
+                    android:textSize="12sp"
+                    app:cornerRadius="20dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnQuickPhrase3"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/tts_phrase_repeat"
+                    android:textSize="12sp"
+                    app:cornerRadius="20dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnQuickPhrase4"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tts_phrase_deaf"
+                    android:textSize="12sp"
+                    app:cornerRadius="20dp" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <!-- Input and Speak row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etTtsInput"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_caption_bubble"
+                android:hint="@string/tts_quick_reply_hint"
+                android:importantForAutofill="no"
+                android:inputType="textCapSentences"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:textColor="@color/text_primary_light"
+                android:textColorHint="@color/text_secondary_light"
+                android:textSize="15sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSpeakReply"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@string/cd_speak_button"
+                android:text="@string/tts_btn_speak"
+                app:cornerRadius="24dp"
+                app:icon="@drawable/ic_volume_up_24dp" />
+
+        </LinearLayout>
+
+        <!-- Listening Control Buttons: Pause/Resume and Stop -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- Pause / Resume Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLivePauseResume"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/cd_pause_button"
+                android:text="@string/captions_btn_pause"
+                android:textSize="16sp"
+                app:cornerRadius="28dp"
+                app:icon="@drawable/ic_pause_24dp"
+                app:iconGravity="textStart" />
+
+            <!-- Stop Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLiveStop"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/cd_stop_button"
+                android:text="@string/captions_btn_stop"
+                android:textColor="@color/status_error"
+                android:textSize="16sp"
+                app:cornerRadius="28dp"
+                app:icon="@drawable/ic_stop_24dp"
+                app:iconGravity="textStart"
+                app:iconTint="@color/status_error"
+                app:strokeColor="@color/status_error" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

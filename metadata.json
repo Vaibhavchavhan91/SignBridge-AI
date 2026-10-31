@@ -1,0 +1,6 @@
+{
+  "name": "SignBridge AI",
+  "description": "Real-time speech-to-text live captions accessibility app for deaf and hard-of-hearing individuals with multi-language support (English, Hindi, Marathi).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
