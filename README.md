@@ -1,207 +1,333 @@
-# SignBridge AI – Real-Time Speech-to-Text Live Captions for Android
+# SignBridge AI — Real-Time Speech-to-Text Live Captions for Android
 
-[![Android](https://img.shields.io/badge/Platform-Android-3DDC84.svg?style=flat&logo=android)](https://www.android.com)
-[![Java](https://img.shields.io/badge/Language-Java_11-ED8B00.svg?style=flat&logo=java)](https://www.java.com)
-[![Material 3](https://img.shields.io/badge/Design-Material_3-757575.svg?style=flat&logo=materialdesign)](https://m3.material.io)
+[![Android](https://img.shields.io/badge/Platform-Android%20API%2024%2B-3DDC84.svg?style=flat&logo=android)](https://www.android.com)
+[![Java](https://img.shields.io/badge/Language-Java%2011-ED8B00.svg?style=flat&logo=openjdk)](https://www.java.com)
+[![Material 3](https://img.shields.io/badge/Design-Material%203-757575.svg?style=flat&logo=materialdesign)](https://m3.material.io)
+[![SQLite](https://img.shields.io/badge/Database-SQLite-003B57.svg?style=flat&logo=sqlite)](https://www.sqlite.org)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-
-**SignBridge AI** (`com.vaibhav.signbridgeai`) is a native Android accessibility application designed specifically for deaf and hard-of-hearing individuals. Built natively using **Java and XML layouts in Android Studio**, it transforms spoken face-to-face conversations into readable, high-contrast captions on the user's mobile screen in real time.
 
 ---
 
 ## 📋 Table of Contents
-1. [Project Overview](#-project-overview)
-2. [Key Features](#-key-features)
-3. [Technology Stack](#-technology-stack)
-4. [Screens & Architecture](#-screens--architecture)
-5. [Screenshots](#-screenshots)
-6. [Setup & Build Instructions](#-setup--build-instructions)
-7. [Running on a Physical Phone](#-running-on-a-physical-phone)
-8. [Speech Recognition Limitations & Technical Realities](#-speech-recognition-limitations--technical-realities)
-9. [Privacy & Security](#-privacy--security)
-10. [Testing](#-testing)
+
+1. [Project Introduction](#-project-introduction)
+2. [Problem Statement](#-problem-statement)
+3. [Project Objectives](#-project-objectives)
+4. [Main Features](#-main-features)
+5. [Technology Stack](#-technology-stack)
+6. [Project Architecture](#-project-architecture)
+7. [Installation & Setup](#-installation--setup-instructions)
+8. [How to Run in Android Studio](#-how-to-run-the-application-in-android-studio)
+9. [Permissions Required](#-permissions-required)
+10. [Privacy & Security](#-privacy--security)
+11. [Future Improvements](#-future-improvements)
 
 ---
 
-## 🎯 Project Overview
+## 🌉 Project Introduction
 
-For deaf and hard-of-hearing people, everyday interactions—such as doctor consultations, store visits, family discussions, and lectures—can be challenging without an interpreter. **SignBridge AI** bridges this communication gap by converting nearby people's spoken words into instant, readable text.
+**SignBridge AI** (`com.vaibhav.signbridgeai`) is a native Android accessibility application designed specifically for **deaf and hard-of-hearing individuals**. Built entirely in **Java with XML layouts** using Android Studio, it transforms nearby spoken conversations into readable, high-contrast live captions displayed on the user's mobile screen in real time.
 
-### Core Design Principles:
-- **Zero Surprises / Manual Listening Control**: The microphone **never** turns on automatically upon opening the app. Listening only begins when the user taps **Start Listening**.
-- **High Readability**: High-contrast color palette (deep blue `#0D47A1` and clean white, with optional high-contrast yellow-on-black mode) and on-the-fly caption font-size controls (18sp to 38sp).
-- **Two-Way Communication**: Provides quick Text-to-Speech (TTS) response buttons and typed replies so deaf users can easily answer back aloud through the device's speaker.
-- **100% Local Privacy**: All saved conversation history resides entirely inside an on-device SQLite database. No mandatory cloud accounts or external user tracking.
+The app bridges the communication gap between deaf individuals and the hearing world — during doctor consultations, classroom lectures, store visits, family discussions, or any face-to-face situation — without requiring any third-party account, subscription, or cloud upload.
 
 ---
 
-## 🌟 Key Features
+## ❗ Problem Statement
 
-### 1. Real-Time Speech-to-Text (Live Captions)
-- **Continuous Android SpeechRecognizer Integration**: Interfaces with Android's native speech recognition system.
-- **Partial & Final Transcriptions**: Displays real-time tentative speech in a floating "Hearing now…" card while speech is ongoing, and appends the final sentences to the captions timeline.
-- **Visual Sound Level Meter**: 5-bar responsive audio waveform animating with voice volume (`onRmsChanged`), providing deaf users immediate visual confirmation that audio/voice is being detected.
-- **Multilingual Support**: Supports English (`en-US`, `en-IN`, `en-GB`), Hindi (`hi-IN`), Marathi (`mr-IN`), and 25+ international languages across Americas, Europe, Asia-Pacific, and the Middle East.
-- **Tactile Haptic Feedback**: Gentle vibration cues notify users when listening starts, when speech is detected, and when paused.
+Approximately **430 million people worldwide** experience disabling hearing loss (WHO, 2023). In everyday situations, deaf and hard-of-hearing individuals often face:
 
-### 2. Manual Listening Control & Loop Safeguards
-- **Zero Auto-Listening**: The microphone **never** activates automatically when opening the app.
-- **Prominent Start Button**: Users explicitly initiate listening sessions via the large hero button on the Home screen.
-- **Pause, Resume & Stop**: Controls allow users to pause listening, resume seamlessly, or stop the session immediately.
-- **Robust Anti-Loop Mechanism**: Handles normal silence timeouts, applies exponential backoff for transient glitches, and limits consecutive retries to safeguard battery and performance.
-- **Lifecycle Cleanliness**: Guarantees all calls to `SpeechRecognizer` occur on the main Android thread, resetting the engine binder on busy states and destroying instances cleanly on session exit or activity destruction.
+- **Communication barriers** during medical consultations, job interviews, public services, and social interactions.
+- **Dependency on interpreters**, who are expensive, unavailable on demand, and not always accessible in rural areas.
+- **Inadequate real-time tools**: Existing captioning apps are often cloud-dependent, require data connectivity, demand accounts/subscriptions, or do not support Indian regional languages like Hindi and Marathi.
+- **Privacy risks**: Many apps transmit audio to external servers for processing, raising concerns about conversation confidentiality.
 
-### 3. Accessible Live Captions Interface
-- **Large High-Legibility Typography**: Conversation-style message bubbles with timestamps and speaker tags.
-- **Dynamic Text Resizing**: Instant font size zoom controls (**+** / **-**) on the top bar (18sp, 24sp, 30sp, 38sp).
-- **Auto-Scrolling**: Keeps the latest recognized sentence in view automatically.
-- **Dual-Communication TTS (Text-to-Speech)**: Allows deaf users to type a response or tap quick phrase chips (*"Yes, I understand"*, *"No, thank you"*, *"Please repeat that slowly"*, *"I am deaf, thank you for speaking clearly"*) to speak aloud through the device speaker.
-- **Session Actions**: Clear conversation with confirmation, or save the transcript directly to History.
-
-### 4. Local Conversation History
-- **100% Local SQLite Storage**: Zero server uploads, zero mandatory accounts or registrations.
-- **Rich Session Details**: Stores duration, language badge, sentence count, word count, and full transcripts.
-- **Search & Management**: Real-time search filter, single session deletion with confirmation dialog, and "Clear All" with confirmation safeguard.
-- **Transcript Detail**: Read past conversations sentence by sentence, copy all text to clipboard, or share via the Android share sheet.
-
-### 5. Accessibility & Display Settings
-- **Display Themes**: Light Mode (Deep Blue `#0D47A1`), Dark Mode (Deep Navy `#0B1325`), High-Contrast Mode (Yellow on Black), and System Default.
-- **Screen & Feedback Controls**: Toggles for gentle haptic vibration, Keep Screen Awake, and Auto-Save.
-- **Microphone Status Diagnostic**: Built-in permission status indicator with a direct link to Android App Settings.
+There is a clear need for a **free, privacy-first, offline-capable, multilingual live captioning app** that works immediately without barriers.
 
 ---
 
-## 🛠 Technology Stack
+## 🎯 Project Objectives
 
-- **Operating System**: Android (API level 24 through 36)
-- **Language**: 100% Java (JDK 11 / 17 compatible)
-- **Architecture**: Native Android Activities, Adapters, Model, Repository pattern
-- **UI Framework**: Native XML Layouts with Material Design 3 Components (`MaterialCardView`, `MaterialButton`, `MaterialToolbar`, `MaterialSwitch`, `ChipGroup`, `BottomSheetDialog`)
-- **Speech Engine**: Android Native `android.speech.SpeechRecognizer`
-- **Speech Output**: Android Native `android.speech.tts.TextToSpeech`
-- **Database**: Local SQLite Database (`android.database.sqlite.SQLiteOpenHelper`)
-- **Settings**: Android `SharedPreferences`
-- **Build System**: Gradle 9.3+ with Gradle Wrapper (`gradlew`, `gradlew.bat`)
+1. **Accessibility First**: Provide a free, open-source communication tool that deaf and hard-of-hearing users can install and use immediately.
+2. **Manual Microphone Control**: The microphone must **never** activate automatically — listening only starts when the user explicitly taps **Start Listening**.
+3. **Multilingual Support**: Support 30+ languages and regional dialects including Hindi, Marathi, English (India/US/UK), Spanish, French, and more.
+4. **Local Privacy**: All conversation data must remain entirely on-device in a local SQLite database — no cloud accounts required.
+5. **Two-Way Communication**: Enable deaf users to respond to speakers using Text-to-Speech (TTS) quick replies and typed input.
+6. **Reliable Speech Engine**: Implement a hardened speech recognizer with anti-loop protection, exponential backoff, and graceful error recovery.
+7. **Accessibility UX**: High-contrast UI, adjustable caption font sizes (18sp–38sp), haptic feedback, and auto-scroll behavior.
 
 ---
 
-## 📱 Screens & Architecture
+## ✨ Main Features
+
+### 🎙️ 1. Real-Time Live Captions
+- Continuous speech recognition using Android's built-in `SpeechRecognizer` API.
+- **Partial (tentative) transcriptions** shown in a floating "Hearing now…" card while speech is in progress.
+- **Final transcriptions** appended to the captions timeline as conversation bubbles with timestamps.
+- **5-bar visual sound level meter** (via `onRmsChanged`) — gives deaf users immediate visual confirmation that audio is being detected.
+
+### 🌐 2. Multilingual Support (30+ Languages)
+- English (US, India, UK, Australia, Canada), Hindi, Marathi, Spanish, French, German, Italian, Portuguese, Arabic, Japanese, Korean, Chinese, and more.
+- Language selection via quick-access chip bar on the Home screen and a full country/language bottom sheet picker with regional filters and flag badges.
+
+### 🎛️ 3. Manual Listening Control & Anti-Loop Safeguards
+- Zero auto-listening: microphone is never activated on app open.
+- **Pause / Resume / Stop** session controls.
+- Exponential backoff for transient errors; maximum consecutive retry limits to protect battery and performance.
+- All `SpeechRecognizer` calls run on the main Android thread; engine is cleanly destroyed on activity exit.
+
+### 🔤 4. Two-Way Communication (TTS Replies)
+- Deaf users can tap **Quick Reply chips** (e.g., *"Yes, I understand"*, *"Please repeat that slowly"*, *"I am deaf, thank you for speaking clearly"*) to speak aloud through the device speaker.
+- Full typed-reply input field for custom responses.
+
+### 💾 5. Conversation History (SQLite)
+- All sessions automatically saved to an on-device SQLite database.
+- **History screen** with full-text search, session duration, caption count, and date/time.
+- **Transcript Detail screen** for reviewing saved conversations.
+- Individual session deletion with confirmation dialog.
+
+### ⚙️ 6. Settings & Personalization
+- Default language preference stored in SharedPreferences.
+- Caption font-size zoom controls (18sp / 24sp / 30sp / 38sp) within the Live Captions screen.
+- High-contrast display mode for low-vision users.
+- Haptic feedback toggle.
+
+### ℹ️ 7. About Screen
+- App version, purpose, open-source attribution, and accessibility mission statement.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+|---|---|
+| **Language** | Java 11 |
+| **UI Framework** | Android Views (XML Layouts) |
+| **Design System** | Material Design 3 (Material Components) |
+| **Speech Recognition** | Android `SpeechRecognizer` API (system speech engine) |
+| **Text-to-Speech** | Android `TextToSpeech` API |
+| **Local Database** | SQLite via `SQLiteOpenHelper` |
+| **Preferences** | Android `SharedPreferences` |
+| **Build System** | Gradle (Kotlin DSL — `build.gradle.kts`) |
+| **Min SDK** | API 24 (Android 7.0 Nougat) |
+| **Target SDK** | API 36 |
+| **IDE** | Android Studio (Ladybug / Koala or newer) |
+
+---
+
+## 🏗️ Project Architecture
+
+The project follows a **single-module, layered architecture** with clear separation of concerns:
 
 ```
-com.vaibhav.signbridgeai
- ├── SignBridgeApp.java               # Custom Application class (applies theme globally)
- ├── SplashActivity.java              # Splash screen with logo branding
- ├── MainActivity.java                # Home screen with Start Listening, Stats, and Language selector
- ├── LiveCaptionsActivity.java        # Core live captioning interface with sound bars and TTS
- ├── HistoryActivity.java             # Saved conversation sessions with search and delete
- ├── TranscriptDetailActivity.java    # Full transcript inspector, clipboard copy & share
- ├── SettingsActivity.java            # Accessibility, font size, theme, and haptic controls
- ├── AboutActivity.java               # Mission statement, deaf accessibility guides, and privacy
- ├── adapter
- │   ├── CaptionAdapter.java          # Dynamic font-scaling caption items adapter
- │   ├── SessionAdapter.java          # Saved sessions list adapter
- │   └── LanguageAdapter.java         # Country and language picker adapter
- ├── db
- │   ├── DatabaseHelper.java          # SQLite schema creation & table migrations
- │   └── SessionRepository.java       # Thread-safe CRUD data access methods
- ├── dialog
- │   └── LanguageSelectBottomSheet.java # Searchable country & language bottom sheet
- ├── model
- │   ├── CaptionItem.java             # Individual utterance model
- │   ├── ConversationSession.java     # Session metadata and duration model
- │   └── LanguageItem.java            # Country, language, flag, and region model
- ├── speech
- │   └── SpeechManager.java           # Hardened continuous speech recognizer controller
- ├── tts
- │   └── TtsManager.java              # Text-to-speech speaker output manager
- └── util
-     ├── AppPreferences.java          # SharedPreferences persistence
-     ├── HapticHelper.java            # Tactile vibration feedback
-     └── LanguageHelper.java          # Registry of 30+ countries and languages
+com.vaibhav.signbridgeai/
+│
+├── SignBridgeApp.java              # Application class (app-level init)
+│
+├── SplashActivity.java            # Launcher splash screen
+├── MainActivity.java              # Home screen (stats, language picker, recent sessions)
+├── LiveCaptionsActivity.java      # Core live captioning screen
+├── HistoryActivity.java           # Saved sessions list with search
+├── TranscriptDetailActivity.java  # Full transcript viewer
+├── SettingsActivity.java          # App preferences
+├── AboutActivity.java             # About / mission screen
+│
+├── adapter/
+│   ├── CaptionAdapter.java        # RecyclerView adapter for caption bubbles
+│   ├── LanguageAdapter.java       # Language list adapter for bottom sheet
+│   └── SessionAdapter.java        # RecyclerView adapter for history sessions
+│
+├── db/
+│   ├── DatabaseHelper.java        # SQLiteOpenHelper — schema & migrations
+│   └── SessionRepository.java     # CRUD operations for sessions and captions
+│
+├── dialog/
+│   └── LanguageSelectBottomSheet.java  # Country/language picker bottom sheet
+│
+├── model/
+│   ├── CaptionItem.java           # Individual utterance data model
+│   ├── ConversationSession.java   # Session metadata model
+│   └── LanguageItem.java          # Country + language + flag model
+│
+├── speech/
+│   └── SpeechManager.java         # Hardened SpeechRecognizer controller (anti-loop)
+│
+├── tts/
+│   └── TtsManager.java            # TextToSpeech speaker output manager
+│
+└── util/
+    ├── AppPreferences.java        # SharedPreferences wrapper
+    ├── HapticHelper.java          # Haptic/vibration feedback utilities
+    └── LanguageHelper.java        # Registry of 30+ languages and countries
+```
+
+### Data Flow Diagram
+
+```
+User Taps "Start Listening"
+         │
+         ▼
+MainActivity ──► LiveCaptionsActivity
+                        │
+                        ▼
+                  SpeechManager
+              (Android SpeechRecognizer)
+                        │
+              ┌─────────┴─────────┐
+              ▼                   ▼
+     Partial Results         Final Results
+    (tentative card)     (caption bubble)
+                              │
+                              ▼
+                     SessionRepository
+                       (SQLite DB)
+                              │
+                              ▼
+                     HistoryActivity
+                  TranscriptDetailActivity
 ```
 
 ---
 
-## 📸 App Screenshots
-
-| 1. Home Screen | 2. Live Captions Screen | 3. Country & Language Selection | 4. Saved Conversation History |
-|:---:|:---:|:---:|:---:|
-| <img src="docs/images/screenshot_home.png" width="220" alt="Home Screen" /> | <img src="docs/images/screenshot_live_captions.png" width="220" alt="Live Captions" /> | <img src="docs/images/screenshot_country_language.png" width="220" alt="Language Selection" /> | <img src="docs/images/screenshot_history.png" width="220" alt="Conversation History" /> |
-| **Start Listening Hero**<br/>One-tap manual trigger, active language pill & stats | **Real-Time Live Captions**<br/>Volume meter, tentative speech & Quick Reply TTS | **Multi-Country Picker**<br/>30+ countries, flag badges & region filters | **Saved History & Search**<br/>Searchable SQLite transcripts & delete safeguards |
-
----
-
-## 🚀 Setup & Build Instructions
+## 🚀 Installation & Setup Instructions
 
 ### Prerequisites
-- Android Studio Ladybug, Koala, Hedgehog, or newer.
-- Java Development Kit (JDK) 11 or 17.
-- Android SDK with platform tools installed (API 24+).
 
-### Building with the Gradle Wrapper
-You can build the project from the command line using the included Gradle wrapper:
+- **Android Studio** Ladybug (2024.2.1), Koala (2024.1.1), Hedgehog (2023.1.1), or newer.
+- **Java Development Kit (JDK)**: JDK 11 or JDK 17 (bundled with Android Studio).
+- **Android SDK**: API level 24 or higher (Android 7.0+).
+- **Git**: Installed and configured.
+
+### Step 1 — Clone the Repository
 
 ```bash
-# On Linux / macOS
-./gradlew assembleDebug
-
-# On Windows
-gradlew.bat assembleDebug
+git clone https://github.com/Vaibhavchavhan91/signbridge-ai.git
+cd signbridge-ai
 ```
 
-The compiled APK will be generated at:
+### Step 2 — Open in Android Studio
+
+1. Launch **Android Studio**.
+2. Select **File → Open**.
+3. Navigate to and select the `signbridge-ai` folder.
+4. Android Studio will detect the Gradle project and begin syncing automatically.
+
+### Step 3 — Sync Gradle
+
+Wait for the Gradle sync to complete (bottom status bar). If it fails:
+- Ensure you have an active internet connection for the first sync (downloads dependencies).
+- Check **File → Project Structure → SDK Location** matches your local Android SDK path.
+
+### Step 4 — Build the Project
+
+**Via Android Studio:**
+- Go to **Build → Make Project** (`Ctrl+F9` / `Cmd+F9`).
+
+**Via command line (Gradle wrapper):**
+```bash
+# Windows
+gradlew.bat assembleDebug
+
+# macOS / Linux
+./gradlew assembleDebug
+```
+
+The debug APK will be generated at:
 ```
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
----
-
-## 📲 Running on a Physical Phone
-
-Speech recognition relies on the device microphone and speech engine. Testing on a physical Android phone is recommended:
-
-1. On your Android phone, navigate to **Settings > About Phone** and tap **Build Number** 7 times to enable **Developer Options**.
-2. Open **Developer Options** and enable **USB Debugging**.
-3. Connect your Android phone to your computer via USB.
-4. In Android Studio, select your physical device from the deployment dropdown.
-5. Click **Run** (`Shift + F10`).
-6. Grant the **Microphone Permission** when prompted upon pressing **Start Listening**.
+> **Note:** The `.env` file (for Gemini API key) is excluded from version control. The app works fully without it — the API key placeholder in `.env.example` is for optional AI features only.
 
 ---
 
-## ⚠️ Speech Recognition Limitations & Technical Realities
+## ▶️ How to Run the Application in Android Studio
 
-To maintain complete transparency and avoid misleading claims:
+### Option A — Run on a Physical Android Device (Recommended)
 
-1. **External Recognition Provider**:
-   - `Android SpeechRecognizer` delegates audio transcription to the device's system speech engine (typically **Google Speech Services** on most certified Android devices).
-   - **On-device speech processing is NOT guaranteed.** Depending on the Android version, manufacturer OEM, and device hardware, speech recognition may process audio via network requests to Google servers rather than fully offline.
-2. **Language Availability**:
-   - Recognition in **English**, **Hindi**, **Marathi**, or any other language is only functional if the underlying speech engine on the device supports that language.
-   - If a language is missing or offline recognition is desired, users should verify in their device settings: **Settings > System > Languages > Voice input > Offline speech recognition** and download the desired language pack (e.g., English, Hindi, Marathi).
-3. **Audio Quality**:
-   - Background noise, distance from the speaker, and overlapping voices can impact recognition accuracy. For best results, place the phone within 1–2 meters of the person speaking.
+Speech recognition requires a real microphone and a working speech engine.
+
+1. On your Android phone, go to **Settings → About Phone**.
+2. Tap **Build Number** 7 times to unlock **Developer Options**.
+3. In **Developer Options**, enable **USB Debugging**.
+4. Connect your phone to your computer via USB cable.
+5. Accept the **"Allow USB Debugging"** dialog on your phone.
+6. In Android Studio, select your device from the **deployment target dropdown**.
+7. Click the **Run** button ▶️ (or press `Shift+F10`).
+8. Once the app launches, tap **Start Listening** and **grant the microphone permission**.
+
+### Option B — Run on Android Emulator
+
+1. Go to **Tools → Device Manager** → **Create Device**.
+2. Choose a phone (e.g., Pixel 6) with **API 30+**.
+3. Select a system image with **Google APIs** (required for speech recognition).
+4. Launch the emulator, then run the app as above.
+
+> ⚠️ **Emulator limitation**: Speech recognition on the emulator requires the emulator to have Google Play Services and a working internet connection. For best results, use a physical device.
+
+### Offline Speech Recognition (Optional)
+
+For offline speech recognition, on your Android device:
+1. Go to **Settings → System → Languages → Voice Input**.
+2. Select **Offline speech recognition**.
+3. Download the desired language packs (e.g., English, Hindi, Marathi).
 
 ---
 
-## 🔒 Privacy & Security
+## 🔒 Permissions Required
 
-- **No Secret Recording**: The microphone is never activated in the background or upon app launch.
-- **No Cloud Uploads**: Conversations and transcripts are saved strictly to the on-device SQLite database (`signbridge_conversations.db`).
-- **No Account Required**: The application does not require any login, username, phone number, or email.
-- **Zero Hardcoded Secrets**: Does not package or embed private API keys or signing credentials.
-- **User Control**: Users can clear current live captions or delete saved sessions at any time with a confirmation prompt.
+| Permission | Purpose | When Requested |
+|---|---|---|
+| `RECORD_AUDIO` | Captures microphone audio for speech recognition | When user taps **Start Listening** for the first time |
+| `VIBRATE` | Provides haptic feedback when listening starts/stops | Granted automatically (no user dialog) |
+| `INTERNET` | Required by Android `SpeechRecognizer` for cloud fallback processing | Granted automatically (no user dialog) |
+
+> The app **never** records audio in the background. The microphone is activated **only** when the user explicitly taps the Start Listening button inside the Live Captions screen.
 
 ---
 
-## 🧪 Testing
+## 🔐 Privacy & Security
 
-To run the unit test suite:
-```bash
-# On Linux / macOS
-./gradlew :app:testDebugUnitTest
+- **No Secret Recording**: The microphone is never activated automatically or in the background.
+- **No Cloud Uploads of Conversations**: All saved transcripts reside strictly in the on-device SQLite database (`signbridge_conversations.db`). Conversations are never uploaded to any server.
+- **No Account Required**: No login, email, phone number, or registration of any kind.
+- **No Hardcoded API Keys**: The app does not embed or package any private API keys, signing credentials, or secrets. The `.env` file is excluded from version control via `.gitignore`.
+- **Speech Engine Transparency**: `Android SpeechRecognizer` delegates to the system speech engine (typically Google Speech Services). Depending on the device, audio may be processed via Google's servers for recognition. Users who require fully offline processing can download offline language packs from their device settings.
+- **User Data Control**: Users can clear live captions at any time and permanently delete saved sessions with a confirmation prompt.
+- **Open Source**: Full source code is publicly available for audit at [github.com/Vaibhavchavhan91/signbridge-ai](https://github.com/Vaibhavchavhan91/signbridge-ai).
 
-# On Windows
-gradlew.bat :app:testDebugUnitTest
-```
-All unit tests validate data models, duration calculations, country/language registries, and database helper operations.
+---
+
+## 🔮 Future Improvements
+
+| Feature | Description |
+|---|---|
+| **Offline On-Device Speech AI** | Integrate a fully local speech model (e.g., OpenAI Whisper, Vosk) to eliminate reliance on Google Speech Services and enable truly offline captioning. |
+| **Sign Language Output** | Display animated Indian Sign Language (ISL) or American Sign Language (ASL) hand signs corresponding to recognized speech. |
+| **Speaker Diarization** | Distinguish between multiple speakers in a conversation (e.g., "Speaker 1:", "Speaker 2:") for clearer multi-party transcripts. |
+| **Caption Export** | Allow users to export saved conversation transcripts as `.txt`, `.pdf`, or `.srt` subtitle files. |
+| **Font & Theme Customization** | User-selectable font families, additional high-contrast and dark themes, and custom color pickers. |
+| **Wearable Integration** | Display live captions on Android Wear OS smartwatches for hands-free accessibility. |
+| **Widget Support** | Android home screen widget showing the last captured caption or quick-launch button. |
+| **Real-Time Translation** | Auto-translate recognized speech to the user's preferred language using the ML Kit Translation API. |
+| **Cloud Sync (Optional Opt-in)** | Optional encrypted cloud backup of conversation history for users who consent. |
+| **Tablet & Foldable Optimization** | Adaptive layouts for large screens, tablets, and foldable Android devices. |
+| **Accessibility Audit** | Full TalkBack / screen-reader accessibility audit and compliance pass. |
+
+---
+
+## 👨‍💻 Developer
+
+**Vaibhav Chavhan**
+- GitHub: [@Vaibhavchavhan91](https://github.com/Vaibhavchavhan91)
+- Repository: [github.com/Vaibhavchavhan91/signbridge-ai](https://github.com/Vaibhavchavhan91/signbridge-ai)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.  
+See the [LICENSE](LICENSE) file for details.
+
+---
+
+*Built with ❤️ to make the world more accessible for the deaf and hard-of-hearing community.*

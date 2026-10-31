@@ -1,44 +1,77 @@
-# Built application files
+# ============================================================
+#  SignBridge AI — .gitignore
+#  Excludes build outputs, generated files, local config,
+#  secrets, IDE artifacts, and OS junk.
+# ============================================================
+
+# ── Built application output ──────────────────────────────
 *.apk
+*.aab
 *.aar
 *.ap_
-*.aab
-
-# Files for the ART/Dalvik VM
 *.dex
-
-# Java class files
 *.class
 
-# Generated files
-bin/
-gen/
-out/
+# ── Generated / build directories ────────────────────────
 build/
 .gradle/
 .kotlin/
 .cxx/
 .externalNativeBuild/
+gen/
+out/
+bin/
 
-# Local configuration file (sdk path, etc)
+# ── Local configuration (SDK path, machine-specific) ──────
 local.properties
 
-# Android Studio / IntelliJ IDEA navigation & workspace
+# ── Secrets & credentials — NEVER commit these ────────────
+.env
+*.jks
+*.keystore
+debug.keystore
+debug.keystore*
+*.base64
+google-services.json
+GoogleService-Info.plist
+
+# ── Android Studio / IntelliJ IDEA ───────────────────────
 *.iml
 .idea/
 *.ipr
 *.iws
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
 
-# OS files
+# ── Captures / profiling ──────────────────────────────────
+/captures
+
+# ── Screenshots & screen recordings (docs/images kept) ───
+screenshots/
+*.mp4
+*.mov
+*.avi
+*.webm
+*.mkv
+screen-recording*
+screenrecord*
+
+# ── OS-generated files ───────────────────────────────────
 .DS_Store
 Thumbs.db
+ehthumbs.db
+desktop.ini
 
-# Secrets & credentials
-.env
-*.jks
-*.keystore
-debug.keystore*
-*.base64
+# ── Gradle wrapper (jar kept, caches excluded) ────────────
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
 
-# Captures and profiling
-/captures
+# ── NPM / Node (not used, but safety net) ────────────────
+node_modules/
+
+# ── Temporary files ───────────────────────────────────────
+*.tmp
+*.bak
+*.swp
+*~
